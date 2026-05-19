@@ -2,8 +2,6 @@
 
 This project analyzes RNA-seq data from breast cancer patients to predict chemotherapy treatment response using machine learning approaches. The analysis combines differential gene expression analysis with supervised learning to identify predictive biomarkers.
 
-
-AI-generated Description:
 ## Project Overview
 
 The project uses RNA-seq data from 22 breast cancer patients to build predictive models that classify patients as either "Resistant" or "Sensitive" to chemotherapy treatment. The analysis includes:
@@ -34,12 +32,12 @@ The project uses RNA-seq data from 22 breast cancer patients to build predictive
 ├── brca.html                          # HTML output of the notebook
 ├── multiqc_report.html                # Quality control report
 ├── renv.lock                          # R environment lock file
-├── sample_treatment_data.csv          # Treatment data for LLM parsing
 └── data/
-    ├── SraRunTable.txt               # Sample metadata from SRA
-    ├── salmon.merged.gene_counts.tsv # Raw gene count matrix
-    ├── salmon.merged.gene_tpm.tsv    # TPM-normalized expression
-    └── treatment_parsed.csv          # Structured treatment features
+    ├── SraRunTable.txt                # Sample metadata from SRA
+    ├── salmon.merged.gene_counts.tsv  # Raw gene count matrix
+    ├── salmon.merged.gene_tpm.tsv     # TPM-normalized expression
+    ├── sample_treatment_data.csv      # Raw treatment strings for LLM parsing
+    └── treatment_parsed.csv           # Structured treatment features
 ```
 
 ## Analysis Workflow
