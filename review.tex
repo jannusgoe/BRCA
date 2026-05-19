@@ -1,0 +1,76 @@
+\documentclass[11pt, a4paper]{article}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\geometry{
+    a4paper,
+    left=2.5cm,
+    right=2.5cm,
+    top=2.5cm,
+    bottom=2.5cm
+}
+
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    pdftitle={Peer Review of Report: ADS_Project_P24},
+    pdfauthor={Jannus Goecke},
+}
+
+
+\begin{document}
+
+\title{\textbf{Peer Review for ADS\_Project\_P24}}
+\author{Jannus Goecke}
+\date{\today}
+\maketitle
+
+\section{Summary and Overall Impression}
+
+The present report aims to elucidate the mechanisms of action for nine kinase inhibitors by analyzing dose-dependent protein data. The authors used fuzzy clustering to group proteins with similar response profiles and performed Gene Ontology (GO) enrichment analysis to identify affected biological pathways. The report suggest that inhibitors can be grouped by their impact on the following processes: Set 1 primarily affects cell division, Set 2 targets receptor tyrosine kinase signaling, and Set 3 influences cell migration and angiogenesis.
+
+The report is notable for its ambitious scope, attempting to connect dose-response data to biological mechanisms through a multi-step bioinformatics analysis. However, it suffers from several critical weaknesses. A fundamental conceptual error appears to be present, where data from a biochemical binding assay is misinterpreted as cellular protein expression data. This undermines the biological validity of the conclusions. Quality control is not reported, and the data analysis contains significant methodological flaws, including improper data processing and an inconsistent, poorly justified approach to cluster number selection. While visualizations are used, they are often of poor quality. Consequently, the scientific question of inhibitor mechanisms is not adequately addressed, as the data interpretation does not align with the experimental source.
+
+\section{Evidence and Examples - Discussion of specific Areas}
+
+\subsection{Major Issues}
+
+\begin{itemize}
+    \item \textbf{Fundamental Conceptual Error: Binding vs. Expression Data.} The report states its goal is to analyze "changes in protein expression" (Abstract, p.1). However, the described methods (Kinobeads, Kd, EC50; p.2) and data variables point to a binding displacement assay, where signal intensity reflects drug-protein \textit{binding}, not cellular protein abundance. Interpreting decreased signal as "downregulation" of a gene is incorrect. This core misunderstanding invalidates the biological interpretation of GO analyses across the entire report (e.g., discussion of "upregulated genes" linked to ribosome functions for TAK-901, p.21). To correct this, the authors must re-frame the entire project as an analysis of binding affinity profiles or re-analyze actual protein expression data.
+
+    \item \textbf{Improper Data Processing and Imputation.} The R code on page 6 shows that several dose concentrations were silently removed from the analysis. Furthermore, the code \texttt{exprs(TAK\_data.s)[is.na(exprs(TAK\_data.s))] <- 0} (p.6) imputes missing values with zero \textit{after} data standardization. This is a severe error that distorts protein profiles and can create artificial patterns, invalidating the clustering results. A more appropriate method, such as k-nearest neighbor (kNN) imputation, should be performed \textit{before} standardization.
+
+    \item \textbf{Inconsistent and Unjustified Cluster Number Selection.} The number of clusters is chosen inconsistently across the three drug sets (k = 5, 4, and 2 for Set 1, Set 2 and Set 3 respectivly), with weak justifications. For Set 1 (p.19), the choice of k=5 is not supported by a clear "elbow" in the Dmin plot (p.20). For Set 3 (p.26), the choice of k=2 is justified by a practical concern (small group size) rather than a data-driven metric. This arbitrary selection process compromises the objectivity of the clustering, which is central to the report's claims. A consistent and statistically robust method (e.g., silhouette score analysis) should be applied to all datasets to justify the choice of \textit{k}.
+
+    \item \textbf{Statistical Thresholds in GO Enrichment Analysis.} The code for the Gene Ontology (GO) enrichment analysis (p.8) reveals the use of a \texttt{qvalueCutoff = 0.2}. A q-value of 0.2 means that up to 20\% of the identified "significant" GO terms could be false positives. This is an exceptionally lenient threshold. This choice severely undermines confidence in the reported GO terms and increases the risk of interpreting statistical noise as genuine biological signal. A more rigorous q-value cutoff, such as 0.05 or 0.1, would be more appropriate.
+\end{itemize}
+
+\subsection{Minor Issues}
+
+\begin{itemize}
+    \item An internal comment is present in the references list and must be removed (p.32).
+    
+    \item The citation format in the Introduction is not consistent (p.2).
+    
+    \item The Methods section (p.3) should state the content and dimensionality of the datasets to provide essential context.
+    
+    \item The abstract (p.1) lacks a description of the methods and specific, quantified results.
+    
+    \item The introduction (p.1-2) focuses heavily on the background study (Klaeger et al., 2017) and should give more weight to the specific objectives of the current report.
+    
+    \item Several figures contain artifacts (e.g., "NULL" heading, p.18) or have unreadable small text (p.20, 21, 24, 25, 28), hindering interpretation.
+\end{itemize}
+
+\section{Other Points}
+
+Given the fundamental discrepancy between the described experiment (protein expression changes) and the data used for analysis (drug-protein binding affinitys), the authors should clarify the true nature of the data and the project's goal.
+
+If the data is from a binding displacement assay, a more appropriate analysis would involve identifying drug selectivity profiles. Instead of clustering based on expression-like patterns, one could cluster drugs based on their binding affinity vectors across the measured proteins. This could reveal groups of inhibitors with similar on- and off-target profiles. Further analysis could correlate these binding profiles with known inhibitor classes or biological pathways, which would provide a link between the data and biological mechanism.
+
+\end{document}

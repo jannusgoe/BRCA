@@ -29,3 +29,21 @@ venv/
 # Logs / temp
 *.log
 tmp/
+
+# LaTeX build artifacts (keep .pdf and .tex tracked)
+aux/
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.toc
+*.out
+*.synctex.gz
+*.run.xml
+*.nav
+*.snm
+*.vrb
